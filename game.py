@@ -33,6 +33,8 @@ def prompt():
 
 def loop(game_state):
     while True:
+        print(f"The active player is {game_state.active_player}")
+
         command = prompt()
         if command is Commands.DONE:
             break
