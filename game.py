@@ -27,6 +27,7 @@ class GameState:
     def description(self):
         return f"The active player is {self.active_player}\n"
 
+
 def prompt():
     print("To exit, type “done”.")
     inp = input(": ")
