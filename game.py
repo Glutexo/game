@@ -1,5 +1,11 @@
 from dataclasses import dataclass
 from dataclasses import replace
+from enum import auto
+from enum import Enum
+
+
+class Commands(Enum):
+    DONE = auto()
 
 
 @dataclass
@@ -18,11 +24,17 @@ class GameState:
         return replace(self, active_player=next_player)
 
 
+def prompt():
+    print("To exit, type “done”.")
+    inp = input(": ")
+    if inp == "done":
+        return Commands.DONE
+
+
 def loop(game_state):
     while True:
-        print("To exit, type “done”.")
-        inp = input(": ")
-        if inp == "done":
+        command = prompt()
+        if command is Commands.DONE:
             break
 
         game_state = game_state.next_player()
