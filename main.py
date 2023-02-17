@@ -1,7 +1,9 @@
 def main():
     while True:
-        input()
-        exit()
+        print("To exit, type “done”.")
+        inp = input()
+        if inp == "done":
+            return
 
 
 if __name__ == "__main__":
