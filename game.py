@@ -23,6 +23,9 @@ class GameState:
             next_player = 0
         return replace(self, active_player=next_player)
 
+    @property
+    def description(self):
+        return f"The active player is {self.active_player}\n"
 
 def prompt():
     print("To exit, type “done”.")
@@ -33,7 +36,7 @@ def prompt():
 
 def loop(game_state):
     while True:
-        print(f"The active player is {game_state.active_player}")
+        print(game_state.description)
 
         command = prompt()
         if command is Commands.DONE:
