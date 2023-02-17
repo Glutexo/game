@@ -18,16 +18,19 @@ class GameState:
         return replace(self, active_player=next_player)
 
 
-def main():
-    game_state = GameState.init()
-
+def loop(game_state):
     while True:
         print("To exit, type “done”.")
         inp = input(": ")
         if inp == "done":
-            return
+            break
 
         game_state = game_state.next_player()
+
+
+def main():
+    game_state = GameState.init()
+    loop(game_state)
 
 
 if __name__ == "__main__":
