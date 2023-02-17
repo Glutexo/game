@@ -1,7 +1,7 @@
 def main():
     while True:
         print("To exit, type “done”.")
-        inp = input()
+        inp = input(": ")
         if inp == "done":
             return
 
