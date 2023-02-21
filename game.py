@@ -9,7 +9,7 @@ class Commands(Enum):
 
 
 @dataclass
-class GameState:
+class State:
     player_count: ...
     active_player: ...
 
@@ -35,20 +35,20 @@ def prompt():
         return Commands.DONE
 
 
-def loop(game_state):
+def loop(state):
     while True:
-        print(game_state.description)
+        print(state.description)
 
         command = prompt()
         if command is Commands.DONE:
             break
 
-        game_state = game_state.next_player()
+        state = state.next_player()
 
 
 def main():
-    game_state = GameState.init()
-    loop(game_state)
+    state = State.init()
+    loop(state)
 
 
 if __name__ == "__main__":
