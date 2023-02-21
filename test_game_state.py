@@ -24,3 +24,15 @@ def test_next_player_1_to_0():
     game_state = replace(game_state, active_player=1)
     game_state = game_state.next_player()
     assert game_state.active_player == 0
+
+
+def test_description_active_player_0():
+    game_state = GameState.init()
+    game_state = replace(game_state, active_player=0)
+    assert game_state.description == "The active player is 0\n"
+
+
+def test_description_active_player_1():
+    game_state = GameState.init()
+    game_state = replace(game_state, active_player=1)
+    assert game_state.description == "The active player is 1\n"
