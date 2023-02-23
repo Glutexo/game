@@ -1,10 +1,10 @@
-from game import Commands
-from game import loop
-
 from unittest.mock import ANY
 from unittest.mock import call
 from unittest.mock import Mock
 from unittest.mock import patch
+
+from game import Commands
+from game import loop
 
 
 @patch("game.prompt", side_effect=[Commands.DONE])
