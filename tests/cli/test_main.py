@@ -1,10 +1,10 @@
 from unittest.mock import patch
 
-from game import main
+from cli import main
 from game import State
 
 
-@patch("game.loop")
+@patch("cli.loop")
 def test_loop_actual(loop):
     main()
 
@@ -12,8 +12,8 @@ def test_loop_actual(loop):
     loop.assert_called_once_with(initial_state)
 
 
-@patch("game.loop")
-@patch("game.State")
+@patch("cli.loop")
+@patch("cli.State")
 def test_loop_mock(state, loop):
     main()
 
