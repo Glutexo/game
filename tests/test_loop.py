@@ -86,3 +86,32 @@ def test_next_player_many(_prompt):
 
     next_state = initial_state.next_player.return_value
     next_state.next_player.assert_called_once_with()
+
+
+@patch("game.prompt", side_effect=[Commands.DONE])
+def test_stdout_one(_prompt, capsys):
+    state = Mock(description="Initial state")
+    loop(state)
+
+    out, _err = capsys.readouterr()
+    assert out == "Initial state\n"
+
+
+@patch("game.prompt", side_effect=[None, Commands.DONE])
+def test_stdout_many(_prompt, capsys):
+    state = Mock(**{
+        "description": "Initial state",
+        "next_player.return_value.description": "Next state"
+    })
+    loop(state)
+
+    out, _err = capsys.readouterr()
+    assert out == "Initial state\nNext state\n"
+
+
+@patch("game.prompt", side_effect=[None, Commands.DONE])
+def test_stderr(_prompt, capsys):
+    loop(Mock())
+
+    _out, err = capsys.readouterr()
+    assert err == ""
