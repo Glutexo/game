@@ -1,5 +1,6 @@
-from game import State
 from dataclasses import replace
+
+from game import State
 
 def test_0_to_1():
     state = State.init()

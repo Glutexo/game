@@ -1,6 +1,7 @@
+from dataclasses import replace
+
 from cli import describe
 from game import State
-from dataclasses import replace
 
 
 def test_active_player_0():
