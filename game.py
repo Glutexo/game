@@ -16,7 +16,7 @@ class State(namedtuple("State", ["player_count", "active_player"])):
         next_player = self.active_player + 1
         if next_player == self.player_count:
             next_player = 0
-        return State(**{**self._asdict(), "active_player": next_player})
+        return self._replace(active_player=next_player)
 
 
 def loop(state, callback):
