@@ -18,5 +18,5 @@ def test_loop_actual(loop):
 def test_loop_mock(state, loop):
     main()
 
-    initial_state = state.init()
+    initial_state = state.init.return_value
     loop.assert_called_once_with(initial_state, callback)
