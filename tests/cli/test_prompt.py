@@ -27,7 +27,7 @@ def test_command_done(_input):
 
 @mark.parametrize(("input_param",), [("",), ("unknown",)])
 def test_command_unknown(input_param):
-    with patch("cli.input", side_effect=[input_param]) as _input_func:
+    with patch("cli.input", side_effect=[input_param]):
         command = prompt()
         assert command is None
 
