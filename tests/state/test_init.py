@@ -1,5 +1,6 @@
 from game import State
 
+
 def test_init_player_count():
     state = State.init()
     assert state.player_count == 2
