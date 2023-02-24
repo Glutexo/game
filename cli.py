@@ -1,11 +1,6 @@
-from enum import auto
-from enum import Enum
-
+from game import Commands
+from game import loop
 from game import State
-
-
-class Commands(Enum):
-    EXIT = auto()
 
 
 def describe(state):
@@ -19,21 +14,17 @@ def prompt():
         return Commands.EXIT
 
 
-def loop(state):
-    while True:
-        description = describe(state)
-        print(description)
+def callback(state):
+    description = describe(state)
+    print(description)
 
-        command = prompt()
-        if command is Commands.EXIT:
-            return state
-
-        state = state.next_player()
+    command = prompt()
+    return command
 
 
 def main():
     state = State.init()
-    loop(state)
+    loop(state, callback)
 
 
 if __name__ == "__main__":
