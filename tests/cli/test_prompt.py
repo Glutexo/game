@@ -10,7 +10,7 @@ from cli import prompt
 @patch("cli.print")
 def test_message(print_func, _input_func):
     prompt()
-    print_func.assert_called_once_with("To exit, type “done”.")
+    print_func.assert_called_once_with("To exit, type “exit”.")
 
 
 @patch("cli.input")
@@ -20,7 +20,7 @@ def test_prompt(input_func):
 
 
 @patch("cli.input", side_effect=["exit"])
-def test_command_done(_input):
+def test_command_exit(_input):
     command = prompt()
     assert command is Commands.EXIT
 
@@ -36,7 +36,7 @@ def test_command_unknown(input_param):
 def test_stdout(_input_func, capsys):
     prompt()
     out, _err = capsys.readouterr()
-    assert out == "To exit, type “done”.\n"
+    assert out == "To exit, type “exit”.\n"
 
 
 @patch("cli.input", side_effect=[""])
