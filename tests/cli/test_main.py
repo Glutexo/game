@@ -9,7 +9,7 @@ from game import State
 def test_loop_actual(loop):
     main()
 
-    initial_state = State.init()
+    initial_state = State()
     loop.assert_called_once_with(initial_state, callback)
 
 
@@ -18,5 +18,5 @@ def test_loop_actual(loop):
 def test_loop_mock(state, loop):
     main()
 
-    initial_state = state.init.return_value
+    initial_state = state.return_value
     loop.assert_called_once_with(initial_state, callback)

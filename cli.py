@@ -23,7 +23,7 @@ def callback(state):
 
 
 def main():
-    state = State.init()
+    state = State()
     loop(state, callback)
 
 
