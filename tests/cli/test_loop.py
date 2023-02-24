@@ -1,4 +1,3 @@
-from unittest.mock import ANY
 from unittest.mock import call
 from unittest.mock import Mock
 from unittest.mock import patch
@@ -9,33 +8,31 @@ from cli import loop
 
 @patch("cli.prompt", side_effect=[Commands.DONE])
 @patch("cli.print")
-def test_description_initial(print_, _prompt):
+@patch("cli.describe")
+def test_describe_initial(describe, _print, _prompt):
     state = Mock()
     loop(state)
-    assert print_.mock_calls == [call(state.description)]
+    assert describe.mock_calls == [call(state)]
 
 
 @patch("cli.prompt", side_effect=[None, Commands.DONE])
 @patch("cli.print")
-def test_description_next(print_, _prompt):
+@patch("cli.describe")
+def test_describe_next(describe, _print, _prompt):
     initial_state = Mock()
     loop(initial_state)
 
     next_state = initial_state.next_player.return_value
-    assert print_.mock_calls == [ANY, call(next_state.description)]
+    assert describe.mock_calls == [call(initial_state), call(next_state)]
 
 
 @patch("cli.prompt", side_effect=[None, Commands.DONE])
 @patch("cli.print")
-def test_descriptions(print_, _prompt):
+@patch("cli.describe", side_effect=["first", "second"])
+def test_print(describe, print_, _prompt):
     initial_state = Mock()
     loop(initial_state)
-
-    next_state = initial_state.next_player.return_value
-    assert print_.mock_calls == [
-        call(initial_state.description),
-        call(next_state.description)
-    ]
+    assert print_.mock_calls == [call("first"), call("second")]
 
 
 @patch("cli.prompt", side_effect=[Commands.DONE])
@@ -89,24 +86,22 @@ def test_next_player_many(_prompt):
 
 
 @patch("cli.prompt", side_effect=[Commands.DONE])
-def test_stdout_one(_prompt, capsys):
-    state = Mock(description="Initial state")
+@patch("cli.describe", side_effect=["only"])
+def test_stdout_one(_describe, _prompt, capsys):
+    state = Mock()
     loop(state)
 
     out, _err = capsys.readouterr()
-    assert out == "Initial state\n"
+    assert out == "only\n"
 
 
 @patch("cli.prompt", side_effect=[None, Commands.DONE])
-def test_stdout_many(_prompt, capsys):
-    state = Mock(**{
-        "description": "Initial state",
-        "next_player.return_value.description": "Next state"
-    })
-    loop(state)
+@patch("cli.describe", side_effect=["first", "second"])
+def test_stdout_many(_describe, _prompt, capsys):
+    loop(Mock())
 
     out, _err = capsys.readouterr()
-    assert out == "Initial state\nNext state\n"
+    assert out == "first\nsecond\n"
 
 
 @patch("cli.prompt", side_effect=[None, Commands.DONE])

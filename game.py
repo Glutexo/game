@@ -16,7 +16,3 @@ class State:
         if next_player == self.player_count:
             next_player = 0
         return replace(self, active_player=next_player)
-
-    @property
-    def description(self):
-        return f"The active player is {self.active_player}\n"

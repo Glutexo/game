@@ -8,6 +8,10 @@ class Commands(Enum):
     DONE = auto()
 
 
+def describe(state):
+    return f"The active player is {state.active_player}\n"
+
+
 def prompt():
     print("To exit, type “done”.")
     inp = input(": ")
@@ -17,7 +21,8 @@ def prompt():
 
 def loop(state):
     while True:
-        print(state.description)
+        description = describe(state)
+        print(description)
 
         command = prompt()
         if command is Commands.DONE:
