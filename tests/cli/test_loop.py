@@ -6,7 +6,7 @@ from cli import Commands
 from cli import loop
 
 
-@patch("cli.prompt", side_effect=[Commands.DONE])
+@patch("cli.prompt", side_effect=[Commands.EXIT])
 @patch("cli.print")
 @patch("cli.describe")
 def test_describe_initial(describe, _print, _prompt):
@@ -15,7 +15,7 @@ def test_describe_initial(describe, _print, _prompt):
     assert describe.mock_calls == [call(state)]
 
 
-@patch("cli.prompt", side_effect=[None, Commands.DONE])
+@patch("cli.prompt", side_effect=[None, Commands.EXIT])
 @patch("cli.print")
 @patch("cli.describe")
 def test_describe_next(describe, _print, _prompt):
@@ -26,7 +26,7 @@ def test_describe_next(describe, _print, _prompt):
     assert describe.mock_calls == [call(initial_state), call(next_state)]
 
 
-@patch("cli.prompt", side_effect=[None, Commands.DONE])
+@patch("cli.prompt", side_effect=[None, Commands.EXIT])
 @patch("cli.print")
 @patch("cli.describe", side_effect=["first", "second"])
 def test_print(describe, print_, _prompt):
@@ -35,46 +35,46 @@ def test_print(describe, print_, _prompt):
     assert print_.mock_calls == [call("first"), call("second")]
 
 
-@patch("cli.prompt", side_effect=[Commands.DONE])
+@patch("cli.prompt", side_effect=[Commands.EXIT])
 def test_prompt(prompt):
     loop(Mock())
     # prompt.assert_called_once_with()
     assert prompt.mock_calls == [call()]
 
 
-@patch("cli.prompt", side_effect=[None, Commands.DONE])
+@patch("cli.prompt", side_effect=[None, Commands.EXIT])
 def test_prompts(prompt):
     loop(Mock())
     assert prompt.mock_calls == [call(), call()]
 
 
-@patch("cli.prompt", side_effect=[Commands.DONE])
-def test_done_immediate(_prompt):
+@patch("cli.prompt", side_effect=[Commands.EXIT])
+def test_exit_immediate(_prompt):
     loop(Mock())
     assert True
 
 
-@patch("cli.prompt", side_effect=[None, Commands.DONE])
-def test_done_late(_prompt):
+@patch("cli.prompt", side_effect=[None, Commands.EXIT])
+def test_exit_late(_prompt):
     loop(Mock())
     assert True
 
 
-@patch("cli.prompt", side_effect=[Commands.DONE])
+@patch("cli.prompt", side_effect=[Commands.EXIT])
 def test_next_player_none(_prompt):
     state = Mock()
     loop(state)
     state.next_player.assert_not_called()
 
 
-@patch("cli.prompt", side_effect=[None, Commands.DONE])
+@patch("cli.prompt", side_effect=[None, Commands.EXIT])
 def test_next_player_one(_prompt):
     state = Mock()
     loop(state)
     state.next_player.assert_called_once_with()
 
 
-@patch("cli.prompt", side_effect=[None, None, Commands.DONE])
+@patch("cli.prompt", side_effect=[None, None, Commands.EXIT])
 def test_next_player_many(_prompt):
     initial_state = Mock()
     loop(initial_state)
@@ -85,7 +85,7 @@ def test_next_player_many(_prompt):
     next_state.next_player.assert_called_once_with()
 
 
-@patch("cli.prompt", side_effect=[Commands.DONE])
+@patch("cli.prompt", side_effect=[Commands.EXIT])
 @patch("cli.describe", side_effect=["only"])
 def test_stdout_one(_describe, _prompt, capsys):
     state = Mock()
@@ -95,7 +95,7 @@ def test_stdout_one(_describe, _prompt, capsys):
     assert out == "only\n"
 
 
-@patch("cli.prompt", side_effect=[None, Commands.DONE])
+@patch("cli.prompt", side_effect=[None, Commands.EXIT])
 @patch("cli.describe", side_effect=["first", "second"])
 def test_stdout_many(_describe, _prompt, capsys):
     loop(Mock())
@@ -104,7 +104,7 @@ def test_stdout_many(_describe, _prompt, capsys):
     assert out == "first\nsecond\n"
 
 
-@patch("cli.prompt", side_effect=[None, Commands.DONE])
+@patch("cli.prompt", side_effect=[None, Commands.EXIT])
 def test_stderr(_prompt, capsys):
     loop(Mock())
 

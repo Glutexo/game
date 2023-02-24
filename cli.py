@@ -5,7 +5,7 @@ from game import State
 
 
 class Commands(Enum):
-    DONE = auto()
+    EXIT = auto()
 
 
 def describe(state):
@@ -13,10 +13,10 @@ def describe(state):
 
 
 def prompt():
-    print("To exit, type “done”.")
+    print("To exit, type “exit”.")
     inp = input(": ")
-    if inp == "done":
-        return Commands.DONE
+    if inp == "exit":
+        return Commands.EXIT
 
 
 def loop(state):
@@ -25,8 +25,8 @@ def loop(state):
         print(description)
 
         command = prompt()
-        if command is Commands.DONE:
-            break
+        if command is Commands.EXIT:
+            return state
 
         state = state.next_player()
 

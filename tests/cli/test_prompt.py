@@ -19,10 +19,10 @@ def test_prompt(input_func):
     input_func.assert_called_once_with(": ")
 
 
-@patch("cli.input", side_effect=["done"])
+@patch("cli.input", side_effect=["exit"])
 def test_command_done(_input):
     command = prompt()
-    assert command is Commands.DONE
+    assert command is Commands.EXIT
 
 
 @mark.parametrize(("input_param",), [("",), ("unknown",)])
