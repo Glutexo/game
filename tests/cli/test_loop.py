@@ -50,14 +50,16 @@ def test_prompts(prompt):
 
 @patch("cli.prompt", side_effect=[Commands.EXIT])
 def test_exit_immediate(_prompt):
-    loop(Mock())
-    assert True
+    initial_state = Mock()
+    final_state = loop(initial_state)
+    assert final_state == initial_state
 
 
 @patch("cli.prompt", side_effect=[None, Commands.EXIT])
 def test_exit_late(_prompt):
-    loop(Mock())
-    assert True
+    initial_state = Mock()
+    final_state = loop(initial_state)
+    assert final_state == initial_state.next_player.return_value
 
 
 @patch("cli.prompt", side_effect=[Commands.EXIT])
