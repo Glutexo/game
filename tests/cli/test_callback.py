@@ -3,7 +3,6 @@ from unittest.mock import Mock
 from unittest.mock import patch
 
 from cli import callback
-from game import Commands
 
 
 @patch("cli.prompt")
