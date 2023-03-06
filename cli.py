@@ -3,8 +3,13 @@ from game import loop
 from game import State
 
 
-def describe(state):
-    return f"The active player is {state.active_player}\n"
+def describe_history(index, state):
+    description = describe_state(state)
+    return f"{index} {description}"
+
+
+def describe_state(state):
+    return f"The active player is {state.active_player}"
 
 
 def prompt():
@@ -15,8 +20,9 @@ def prompt():
 
 
 def callback(state):
-    description = describe(state)
-    print(description)
+    for index, state in enumerate(state.history):
+        description = describe_history(index, state)
+        print(description)
 
     command = prompt()
     return command
