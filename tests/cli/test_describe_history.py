@@ -13,7 +13,7 @@ def test_describe_state(describe_state):
 
 
 @patch("cli.describe_state", return_value="description")
-def test_result(_describe_state):
+def test_return(_describe_state):
     result = describe_history(0, Mock())
     assert result == "0 description"
 
