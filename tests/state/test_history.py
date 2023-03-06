@@ -14,7 +14,7 @@ def test_one():
     assert second_state.history == [first_state, second_state]
 
 
-def test_more():
+def test_many():
     first_state = State(previous=[])
     second_state = State(previous=[first_state])
     third_state = State(previous=[first_state, second_state])
