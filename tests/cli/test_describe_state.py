@@ -2,8 +2,8 @@ from unittest.mock import Mock
 
 from pytest import mark
 
-from cli import describe_state
-from game import State
+from red_planet.cli import describe_state
+from red_planet.game import State
 
 
 @mark.parametrize(("active_player",), [(0,), (1,)])

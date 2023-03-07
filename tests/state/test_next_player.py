@@ -1,4 +1,4 @@
-from game import State
+from red_planet.game import State
 
 
 def test_0_to_1():

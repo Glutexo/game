@@ -1,6 +1,6 @@
-from game import Commands
-from game import loop
-from game import State
+from .game import Commands
+from .game import loop
+from .game import State
 
 
 def describe_history(index, state):

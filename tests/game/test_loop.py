@@ -1,8 +1,8 @@
 from unittest.mock import call
 from unittest.mock import Mock
 
-from game import Commands
-from game import loop
+from red_planet.game import Commands
+from red_planet.game import loop
 
 
 def test_callback_one():
