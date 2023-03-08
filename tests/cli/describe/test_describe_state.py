@@ -2,7 +2,7 @@ from unittest.mock import Mock
 
 from pytest import mark
 
-from red_planet.cli import describe_state
+from red_planet.cli.describe import describe_state
 from red_planet.game import State
 
 

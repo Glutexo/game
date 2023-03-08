@@ -1,15 +1,7 @@
-from .game import Commands
-from .game import loop
-from .game import State
-
-
-def describe_history(index, state):
-    description = describe_state(state)
-    return f"{index} {description}"
-
-
-def describe_state(state):
-    return f"The active player is {state.active_player}"
+from .describe import describe_history
+from ..game import Commands
+from ..game import loop
+from ..game import State
 
 
 def prompt():
@@ -31,7 +23,3 @@ def callback(state):
 def main():
     state = State()
     loop(state, callback)
-
-
-if __name__ == "__main__":
-    main()
