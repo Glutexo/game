@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from red_planet.cli import callback
 from red_planet.cli import main
-from red_planet.game import State
+from red_planet import State
 
 
 @patch("red_planet.cli.loop")

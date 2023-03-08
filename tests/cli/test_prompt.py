@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from pytest import mark
 
-from red_planet.game import Commands
+from red_planet import Commands
 from red_planet.cli import prompt
 
 

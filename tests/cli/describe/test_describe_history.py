@@ -2,7 +2,7 @@ from unittest.mock import Mock
 from unittest.mock import patch
 
 from red_planet.cli.describe import describe_history
-from red_planet.game import State
+from red_planet import State
 
 
 @patch("red_planet.cli.describe.describe_state")

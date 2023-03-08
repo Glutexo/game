@@ -1,7 +1,7 @@
 from .describe import describe_history
-from ..game import Commands
-from ..game import loop
-from ..game import State
+from .. import Commands
+from .. import loop
+from .. import State
 
 
 def prompt():
