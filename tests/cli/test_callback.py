@@ -2,12 +2,12 @@ from unittest.mock import call
 from unittest.mock import Mock
 from unittest.mock import patch
 
-from red_planet.cli import callback
+from rain.cli import callback
 
 
-@patch("red_planet.cli.prompt")
-@patch("red_planet.cli.print")
-@patch("red_planet.cli.describe_history")
+@patch("rain.cli.prompt")
+@patch("rain.cli.print")
+@patch("rain.cli.describe_history")
 def test_describe_history_one(describe_history, _print, _prompt):
     history_state = Mock()
     initial_state = Mock(history=[history_state])
@@ -17,9 +17,9 @@ def test_describe_history_one(describe_history, _print, _prompt):
     assert describe_history.mock_calls == [call(0, history_state)]
 
 
-@patch("red_planet.cli.prompt")
-@patch("red_planet.cli.print")
-@patch("red_planet.cli.describe_history")
+@patch("rain.cli.prompt")
+@patch("rain.cli.print")
+@patch("rain.cli.describe_history")
 def test_describe_history_many(describe_history, _print, _prompt):
     first_state = Mock()
     second_state = Mock()
@@ -32,45 +32,45 @@ def test_describe_history_many(describe_history, _print, _prompt):
     ]
 
 
-@patch("red_planet.cli.prompt")
-@patch("red_planet.cli.print")
+@patch("rain.cli.prompt")
+@patch("rain.cli.print")
 def test_print_one(print_, _prompt):
     initial_state = Mock(history=[Mock()])
 
     descriptions = [Mock()]
-    with patch("red_planet.cli.describe_history", side_effect=descriptions):
+    with patch("rain.cli.describe_history", side_effect=descriptions):
         callback(initial_state)
 
     # print_.assert_called_once_with(descriptions[0])
     assert print_.mock_calls == [call(descriptions[0])]
 
 
-@patch("red_planet.cli.prompt")
-@patch("red_planet.cli.print")
+@patch("rain.cli.prompt")
+@patch("rain.cli.print")
 def test_print_many(print_, _prompt):
     initial_state = Mock(history=[Mock(), Mock()])
 
     descriptions = [Mock(), Mock()]
-    with patch("red_planet.cli.describe_history", side_effect=descriptions):
+    with patch("rain.cli.describe_history", side_effect=descriptions):
         callback(initial_state)
 
     assert print_.mock_calls == [call(descriptions[0]), call(descriptions[1])]
 
 
-@patch("red_planet.cli.prompt")
+@patch("rain.cli.prompt")
 def test_prompt(prompt):
     callback(Mock(history=[]))
     prompt.assert_called_once_with()
 
 
-@patch("red_planet.cli.prompt")
+@patch("rain.cli.prompt")
 def test_return(prompt):
     command = callback(Mock(history=[]))
     assert command is prompt.return_value
 
 
-@patch("red_planet.cli.prompt")
-@patch("red_planet.cli.describe_history", side_effect=["description"])
+@patch("rain.cli.prompt")
+@patch("rain.cli.describe_history", side_effect=["description"])
 def test_stdout_one(_describe, _prompt, capsys):
     callback(Mock(history=[Mock()]))
 
@@ -78,9 +78,9 @@ def test_stdout_one(_describe, _prompt, capsys):
     assert out == "description\n"
 
 
-@patch("red_planet.cli.prompt")
+@patch("rain.cli.prompt")
 @patch(
-    "red_planet.cli.describe_history",
+    "rain.cli.describe_history",
     side_effect=["first description", "second description"]
 )
 def test_stdout_many(_describe, _prompt, capsys):
@@ -90,7 +90,7 @@ def test_stdout_many(_describe, _prompt, capsys):
     assert out == "first description\nsecond description\n"
 
 
-@patch("red_planet.cli.prompt")
+@patch("rain.cli.prompt")
 def test_stderr(_prompt, capsys):
     callback(Mock(history=[]))
 

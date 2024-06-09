@@ -1,6 +1,6 @@
 from unittest.mock import Mock
 
-from red_planet import State
+from rain import State
 
 
 def test_empty():

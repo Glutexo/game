@@ -1,4 +1,4 @@
-from red_planet import State
+from rain import State
 
 
 def test_default_player_count():

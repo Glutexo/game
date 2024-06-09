@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 from pytest import raises
 
-from red_planet import State
+from rain import State
 
 
 def test_fields():

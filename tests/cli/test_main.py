@@ -1,11 +1,11 @@
 from unittest.mock import patch
 
-from red_planet.cli import callback
-from red_planet.cli import main
-from red_planet import State
+from rain.cli import callback
+from rain.cli import main
+from rain import State
 
 
-@patch("red_planet.cli.loop")
+@patch("rain.cli.loop")
 def test_loop_actual(loop):
     main()
 
@@ -13,8 +13,8 @@ def test_loop_actual(loop):
     loop.assert_called_once_with(initial_state, callback)
 
 
-@patch("red_planet.cli.loop")
-@patch("red_planet.cli.State")
+@patch("rain.cli.loop")
+@patch("rain.cli.State")
 def test_loop_mock(state, loop):
     main()
 
