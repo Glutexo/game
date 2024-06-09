@@ -6,64 +6,69 @@ from rain import loop
 
 
 def test_callback_one():
-    state = Mock()
+    history = Mock()
     callback = Mock(side_effect=[Commands.EXIT])
 
-    loop(state, callback)
+    loop(history, callback)
 
-    # callback.assert_called_once_with(state)
-    assert callback.mock_calls == [call(state)]
+    initial_state = history.last
+    # callback.assert_called_once_with(initial_state)
+    assert callback.mock_calls == [call(initial_state)]
 
 
 def test_callback_many():
-    initial_state = Mock()
+    history = Mock()
     callback = Mock(side_effect=[None, Commands.EXIT])
 
-    loop(initial_state, callback)
+    loop(history, callback)
 
-    final_state = initial_state.next_player.return_value
+    initial_state = history.last
+    final_state = history.append.return_value.last
     assert callback.mock_calls == [call(initial_state), call(final_state)]
 
 
 def test_return_immediate():
-    initial_state = Mock()
+    initial_history = Mock()
     callback = Mock(side_effect=[Commands.EXIT])
 
-    final_state = loop(initial_state, callback)
-    assert final_state == initial_state
+    final_history = loop(initial_history, callback)
+    assert final_history == initial_history
 
 
 def test_return_late():
-    initial_state = Mock()
+    initial_history = Mock()
     callback = Mock(side_effect=[None, Commands.EXIT])
 
-    final_state = loop(initial_state, callback)
-    assert final_state == initial_state.next_player.return_value
+    final_history = loop(initial_history, callback)
+    assert final_history == initial_history.append.return_value
 
 
 def test_next_player_none():
-    state = Mock()
+    history = Mock()
     callback = Mock(side_effect=[Commands.EXIT])
 
-    loop(state, callback)
-    state.next_player.assert_not_called()
+    loop(history, callback)
+    history.last.next_player.assert_not_called()
 
 
 def test_next_player_one():
-    state = Mock()
+    history = Mock()
     callback = Mock(side_effect=[None, Commands.EXIT])
 
-    loop(state, callback)
-    state.next_player.assert_called_once_with()
+    loop(history, callback)
+
+    initial_state = history.last
+    initial_state.next_player.assert_called_once_with()
 
 
 def test_next_player_many():
-    initial_state = Mock()
+    history = Mock()
     callback = Mock(side_effect=[None, None, Commands.EXIT])
 
-    loop(initial_state, callback)
+    loop(history, callback)
 
+    initial_state = history.last
     initial_state.next_player.assert_called_once_with()
 
-    next_state = initial_state.next_player.return_value
-    next_state.next_player.assert_called_once_with()
+    final_state = history.append.return_value.last
+    final_state.next_player.assert_called_once_with()

@@ -7,6 +7,20 @@ class Commands(Enum):
     EXIT = auto()
 
 
+class History(namedtuple('History', ['items'], defaults=([],))):
+    @classmethod
+    def initial(cls, item):
+        return cls(items=[item])
+
+    @property
+    def last(self):
+        return self.items[-1]
+
+    def append(self, item):
+        items = self.items + [item]
+        return self._replace(items=items)
+
+
 class State(
     namedtuple("State", ["player_count", "active_player"], defaults=(2, 0))
 ):
@@ -17,10 +31,12 @@ class State(
         return self._replace(active_player=next_player)
 
 
-def loop(state, callback):
+def loop(history, callback):
     while True:
-        command = callback(state)
+        current_state = history.last
+        command = callback(current_state)
         if command is Commands.EXIT:
-            return state
+            return history
 
-        state = state.next_player()
+        new_state = current_state.next_player()
+        history = history.append(new_state)

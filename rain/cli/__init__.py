@@ -1,6 +1,7 @@
 from .describe import describe_state
 from .. import Commands
 from .. import loop
+from .. import History
 from .. import State
 
 
@@ -21,4 +22,5 @@ def callback(state):
 
 def main():
     state = State()
-    loop(state, callback)
+    history = History.initial(state)
+    loop(history, callback)
