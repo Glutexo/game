@@ -1,4 +1,4 @@
-from .describe import describe_history
+from .describe import describe_state
 from .. import Commands
 from .. import loop
 from .. import State
@@ -12,9 +12,8 @@ def prompt():
 
 
 def callback(state):
-    for index, state in enumerate(state.history):
-        description = describe_history(index, state)
-        print(description)
+    description = describe_state(state)
+    print(description)
 
     command = prompt()
     return command

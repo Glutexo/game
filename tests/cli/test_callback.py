@@ -7,92 +7,50 @@ from rain.cli import callback
 
 @patch("rain.cli.prompt")
 @patch("rain.cli.print")
-@patch("rain.cli.describe_history")
-def test_describe_history_one(describe_history, _print, _prompt):
-    history_state = Mock()
-    initial_state = Mock(history=[history_state])
-    callback(initial_state)
+@patch("rain.cli.describe_state")
+def test_describe_state(describe_state, _print, _prompt):
+    state = Mock()
+    callback(state)
 
-    # describe_history.assert_called_once_with(0, history_state)
-    assert describe_history.mock_calls == [call(0, history_state)]
+    describe_state.assert_called_once_with(state)
 
 
 @patch("rain.cli.prompt")
 @patch("rain.cli.print")
-@patch("rain.cli.describe_history")
-def test_describe_history_many(describe_history, _print, _prompt):
-    first_state = Mock()
-    second_state = Mock()
-    initial_state = Mock(history=[first_state, second_state])
+def test_print_state(print_, _prompt):
+    initial_state = Mock()
 
-    callback(initial_state)
-
-    assert describe_history.mock_calls == [
-        call(0, first_state), call(1, second_state)
-    ]
-
-
-@patch("rain.cli.prompt")
-@patch("rain.cli.print")
-def test_print_one(print_, _prompt):
-    initial_state = Mock(history=[Mock()])
-
-    descriptions = [Mock()]
-    with patch("rain.cli.describe_history", side_effect=descriptions):
+    state = Mock()
+    with patch("rain.cli.describe_state", return_value=state):
         callback(initial_state)
 
-    # print_.assert_called_once_with(descriptions[0])
-    assert print_.mock_calls == [call(descriptions[0])]
-
-
-@patch("rain.cli.prompt")
-@patch("rain.cli.print")
-def test_print_many(print_, _prompt):
-    initial_state = Mock(history=[Mock(), Mock()])
-
-    descriptions = [Mock(), Mock()]
-    with patch("rain.cli.describe_history", side_effect=descriptions):
-        callback(initial_state)
-
-    assert print_.mock_calls == [call(descriptions[0]), call(descriptions[1])]
+    print_.assert_called_once_with(state)
 
 
 @patch("rain.cli.prompt")
 def test_prompt(prompt):
-    callback(Mock(history=[]))
+    callback(Mock())
     prompt.assert_called_once_with()
 
 
 @patch("rain.cli.prompt")
 def test_return(prompt):
-    command = callback(Mock(history=[]))
+    command = callback(Mock())
     assert command is prompt.return_value
 
 
 @patch("rain.cli.prompt")
-@patch("rain.cli.describe_history", side_effect=["description"])
+@patch("rain.cli.describe_state", return_value="description")
 def test_stdout_one(_describe, _prompt, capsys):
-    callback(Mock(history=[Mock()]))
+    callback(Mock())
 
     out, _err = capsys.readouterr()
     assert out == "description\n"
 
 
 @patch("rain.cli.prompt")
-@patch(
-    "rain.cli.describe_history",
-    side_effect=["first description", "second description"]
-)
-def test_stdout_many(_describe, _prompt, capsys):
-    callback(Mock(history=[Mock(), Mock()]))
-
-    out, _err = capsys.readouterr()
-    assert out == "first description\nsecond description\n"
-
-
-@patch("rain.cli.prompt")
 def test_stderr(_prompt, capsys):
-    callback(Mock(history=[]))
+    callback(Mock())
 
     _out, err = capsys.readouterr()
     assert err == ""
