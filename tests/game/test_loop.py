@@ -52,26 +52,27 @@ def test_next_player_none():
 
 
 def test_next_player_one():
-    history = Mock()
+    final_history = Mock()
+    initial_history = Mock(**{"append.return_value": final_history})
     callback = Mock(side_effect=[None, Commands.EXIT])
 
-    loop(history, callback)
+    loop(initial_history, callback)
 
-    initial_state = history.last
-    initial_state.next_player.assert_called_once_with()
+    initial_history.last.next_player.assert_called_once_with()
+    final_history.last.next_player.assert_not_called()
 
 
 def test_next_player_many():
-    history = Mock()
+    final_history = Mock()
+    middle_history = Mock(**{"append.return_value": final_history})
+    initial_history = Mock(**{"append.return_value": middle_history})
     callback = Mock(side_effect=[None, None, Commands.EXIT])
 
-    loop(history, callback)
+    loop(initial_history, callback)
 
-    initial_state = history.last
-    initial_state.next_player.assert_called_once_with()
-
-    final_state = history.append.return_value.last
-    final_state.next_player.assert_called_once_with()
+    initial_history.last.next_player.assert_called_once_with()
+    middle_history.last.next_player.assert_called_once_with()
+    final_history.last.next_player.assert_not_called()
 
 
 def test_append_none():
