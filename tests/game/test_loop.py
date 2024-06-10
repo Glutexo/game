@@ -80,7 +80,7 @@ def test_append_none():
     callback = Mock(side_effect=[Commands.EXIT])
 
     loop(history, callback)
-    assert history.append.assert_not_called()
+    history.append.assert_not_called()
 
 
 def test_append_one():
