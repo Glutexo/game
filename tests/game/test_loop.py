@@ -90,8 +90,8 @@ def test_append_one():
 
     loop(initial_history, callback)
 
-    next = initial_history.last.next_player.return_value
-    initial_history.append.assert_called_once_with(next)
+    initial_next = initial_history.last.next_player.return_value
+    initial_history.append.assert_called_once_with(initial_next)
 
     final_history.append.assert_not_called()
 
