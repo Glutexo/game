@@ -72,3 +72,42 @@ def test_next_player_many():
 
     final_state = history.append.return_value.last
     final_state.next_player.assert_called_once_with()
+
+
+def test_append_none():
+    history = Mock()
+    callback = Mock(side_effect=[Commands.EXIT])
+
+    loop(history, callback)
+    assert history.append.assert_not_called()
+
+
+def test_append_one():
+    final_history = Mock()
+    initial_history = Mock(**{"append.return_value": final_history})
+    callback = Mock(side_effect=[None, Commands.EXIT])
+
+    loop(initial_history, callback)
+
+    next = initial_history.last.next_player.return_value
+    initial_history.append.assert_called_once_with(next)
+
+    final_history.append.assert_not_called()
+
+
+def test_append_many():
+    final_history = Mock()
+    middle_history = Mock(**{"append.return_value": final_history})
+    initial_history = Mock(**{"append.return_value": middle_history})
+
+    callback = Mock(side_effect=[None, None, Commands.EXIT])
+
+    loop(initial_history, callback)
+
+    initial_next = initial_history.last.next_player.return_value
+    initial_history.append.assert_called_once_with(initial_next)
+
+    middle_next = middle_history.last.next_player.return_value
+    middle_history.append.assert_called_once_with(middle_next)
+
+    final_history.append.assert_not_called()
