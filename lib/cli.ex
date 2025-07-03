@@ -1,10 +1,10 @@
 defmodule Game.CLI do
   def main(_) do
-    end_state =
+    winner =
       Game.begin()
       |> turn()
 
-    message = "Player #{end_state[:active_player]} wins!"
+    message = "Player #{winner} wins!"
     IO.puts(message)
   end
 
@@ -13,7 +13,7 @@ defmodule Game.CLI do
     case IO.gets(message) do
       :eof ->
         IO.puts("")
-        state
+        Game.quit(state)
       _ -> turn(state)
     end
   end
